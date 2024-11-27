@@ -3,21 +3,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import Message
 from django.db.models import Q
+from django.utils import timezone
+from datetime import datetime
 
 
 @login_required
 def chat_room(request, room_name):
-    search_query = request.GET.get('search', '') 
-    users = User.objects.exclude(id=request.user.id) 
+    search_query = request.GET.get('search', '')
+    users = User.objects.exclude(id=request.user.id)
     chats = Message.objects.filter(
         (Q(sender=request.user) & Q(receiver__username=room_name)) |
         (Q(receiver=request.user) & Q(sender__username=room_name))
     )
 
     if search_query:
-        chats = chats.filter(Q(content__icontains=search_query))  
+        chats = chats.filter(Q(content__icontains=search_query))
 
-    chats = chats.order_by('timestamp') 
+    chats = chats.order_by('timestamp')
     user_last_messages = []
 
     for user in users:
@@ -33,7 +35,10 @@ def chat_room(request, room_name):
 
     # Sort user_last_messages by the timestamp of the last_message in descending order
     user_last_messages.sort(
-        key=lambda x: x['last_message'].timestamp if x['last_message'] else None,
+        key=lambda x: (
+            timezone.make_aware(x['last_message'].timestamp) if x['last_message'] and not timezone.is_aware(x['last_message'].timestamp)
+            else x['last_message'].timestamp
+        ) if x['last_message'] else timezone.make_aware(datetime.min),
         reverse=True
     )
 
@@ -42,5 +47,5 @@ def chat_room(request, room_name):
         'chats': chats,
         'users': users,
         'user_last_messages': user_last_messages,
-        'search_query': search_query 
+        'search_query': search_query
     })

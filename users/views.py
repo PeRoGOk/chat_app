@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 
-
 def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -57,6 +56,6 @@ def signup_view(request):
         messages.success(request, 'Signup successful! You can now log in.')
         return redirect('login')
     if request.user.is_authenticated:
-        return redirect('/chat/kishan/') #todo: pass usename
+        return redirect('/chat/kishan/')
     return render(request, 'signup.html')
 
