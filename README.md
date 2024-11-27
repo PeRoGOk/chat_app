@@ -99,8 +99,7 @@ chat_app/
 
 ### UML-діаграма
 
-```plantuml
-@startuml
+```mermaid
 
 class User {
   - username: String
@@ -127,7 +126,6 @@ Chat "0..*" -- "1..*" User : "includes"
 Chat "0..*" -- "0..*" Message : "contains"
 Message "0..*" -- "1" User : "sent by"
 
-@enduml
 ```
 ## Інструкція з використання  
 
