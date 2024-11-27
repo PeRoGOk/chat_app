@@ -100,31 +100,39 @@ chat_app/
 ### UML-діаграма
 
 ```mermaid
+classDiagram
+    class User {
+        - username: String
+        - email: String
+        - password: String
+        - created_at: DateTime
+        - updated_at: DateTime
+        + register(): void
+        + login(): void
+        + logout(): void
+    }
 
-class User {
-  - username: String
-  - email: String
-  - password: String
-  - created_at: DateTime
-  - updated_at: DateTime
-  + register(): void
-  + login(): void
-  + logout(): void
-}
+    class Chat {
+        - chat_id: Integer
+        - participants: List<User>
+        - created_at: DateTime
+        + create_chat(): void
+        + send_message(): void
+        + receive_message(): void
+    }
 
-class Chat {
-  - chat_id: Integer
-  - participants: List<User>
-  - created_at: DateTime
-  + create_chat(): void
-  + send_message(): void
-  + receive_message(): void
-}
+    class Message {
+        - message_id: Integer
+        - content: String
+        - sent_at: DateTime
+        + send(): void
+        + receive(): void
+    }
 
-User "1" -- "0..*" Chat : "has access to"
-Chat "0..*" -- "1..*" User : "includes"
-Chat "0..*" -- "0..*" Message : "contains"
-Message "0..*" -- "1" User : "sent by"
+    User --> Chat : has access to
+    Chat <|-- User : includes
+    Chat <|-- Message : contains
+    Message --> User : sent by
 
 ```
 ## Інструкція з використання  
