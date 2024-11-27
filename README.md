@@ -28,7 +28,7 @@
 
 1. **Клонуйте репозиторій:**
    ```bash
-   git clone https://github.com/perogok/chat_app
+   git clone https://github.com/PeRoGOk/chat_app
    
 2. **Встановіть залежності:**
    ```bash
